@@ -1,7 +1,9 @@
 <html>
 <head>
     <meta charset="utf-8"/>
-    <title>Go wasm</title>
+    <link rel="icon" type="image/png" href="/favicon.png"/>
+
+    <title>Triangula Preview</title>
     <style>
         @font-face {
             font-family: 'Open Sans';
@@ -184,6 +186,8 @@
 <script>
     function generation() {
         let json = stepAlgorithm();
+        console.log("Call to doSomething took " + (t1 - t0) + " milliseconds.")
+
         let data = JSON.parse(json)
 
         let width = data.Width;
