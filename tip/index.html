@@ -8,7 +8,7 @@
     <title>tip</title>
     <link rel="stylesheet" type="text/css" href="main.css">
 
-    <script src="tip.js"></script>
+    <script src="tip.min.js"></script>
 </head>
 
 <body>
@@ -16,31 +16,11 @@
     <p>Try throttling your network to see the placeholders load - on Chrome, open DevTools > Network, and change the "No
         throttling" option.</p>
 
-    <img data-src="redpanda.jpg" style="height: 50vh;">
+    <img data-src="redpanda.jpg" style="height: 500px;">
     <p style="font-size: 12px; margin-top: 0;">Placeholder: 6,758 bytes, real: 7,094,233 bytes</p>
-    <img data-src="girl.jpg" style="height: 50vh;">
 
-    <img data-src="787.jpg" style="height: 50vh;">
-
-    <img data-src="astro.png" style="height: 50vh;">
-
-    <img data-src="sf.jpg" style="height: 50vh;">
-
-    <img data-src="fox.png" style="height: 50vh;">
-
-
-    <p>tip retains all formating; Resize the height of the window to change the size of the image!</p>
-    <div id="rotate">
-        <img data-src="rushmore.jpg" style="height: 200px;">
-    </div>
-    <p style="font-size: 12px; margin-top: 0;">Placeholder: 7,098 bytes, real: 2,035,512 bytes</p>
-    <div id="scale">
-        <img data-src="f35.png" style="height: 200px;">
-    </div>
-    <p style="font-size: 12px; margin-top: 0;">Placeholder: 6,267 bytes, real: 659,803 bytes</p>
-    <p>
-        tip is easy to use: <a href="https://github.com/RH12503/tip">get started now!</a>
-    </p>
+    <img data-src="787.jpg" data-blur=5 style="height: 500px;">
+    <p style="font-size: 12px; margin-top: 0;">Experimental blur</p>
 </body>
 
 </html>

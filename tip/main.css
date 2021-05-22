@@ -30,52 +30,10 @@
   /* Legacy iOS */
 }
 
-img {
-  -webkit-transform: translateZ(0);
-  -moz-transform: translateZ(0);
-  -ms-transform: translateZ(0);
-  -o-transform: translateZ(0);
-  transform: translateZ(0);
-  will-change: background;
-}
-
 body {
   font-family: "Mulish";
 }
 
 html {
   padding-left: 15px;
-}
-
-@keyframes rotation {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(359deg);
-  }
-}
-
-@keyframes scale {
-  from {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.5);
-  }
-  to {
-    transform: scale(1);
-  }
-}
-
-#rotate {
-  animation: rotation 5s infinite linear;
-  display: inline-block;
-  margin: 100px;
-}
-
-#scale {
-  animation: scale 5s infinite ease;
-  display: inline-block;
-  margin: 80px;
 }
