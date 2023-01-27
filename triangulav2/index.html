@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <link rel="icon" type="image/png" href="/favicon.png"/>
+    <link rel="stylesheet" href="/style.css">
+    <script src="wasm_exec.js"></script>
+
+    <title>Triangula Preview</title>
+</head>
+
+<body>
+<div id="content">
+    <div id="top">
+        <div id="logo">
+            <a href="https://github.com/RH12503/triangula"><img src="assets/logo.svg" height="35px"></a>
+        </div>
+        <div id="inputs">
+            <p class="subhead">Points</p>
+            <input type="number" class="input" id="points" step="1" value="500">
+            <label id="upload">
+                <input id="start" type="file" accept="image/png, image/jpeg"/>
+                Start
+            </label>
+        </div>
+
+        <div id="info">
+            This is only a preview of Triangula - output quality is lower.
+        </div>
+    </div>
+    <div id="renderarea">
+        <svg id="render" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+        </svg>
+    </div>
+</div>
+</body>
+
+<script>
+    function render(json) {
+        let data = JSON.parse(json)
+
+        let width = data.Width;
+        let height = data.Height;
+
+        var svg = `<svg id="render" viewBox="0 0 ${width} ${height}"
+ xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" shape-rendering="crispEdges">`;
+        for (let tri of data.Data) {
+            let c = tri.Color;
+            let t = tri.Triangle.Points;
+
+            svg += `<polygon points="${t[0].X * width},${t[0].Y * height}
+${t[1].X * width},${t[1].Y * height} ${t[2].X * width},${t[2].Y * height}"
+fill="rgb(${c.R / 255 * 100}%, ${c.G / 255 * 100}%, ${c.B / 255 * 100}%)"/>`;
+        }
+        svg += `</svg>`;
+        document.getElementById('render').outerHTML = svg;
+    }
+
+    function uploaded(event) {
+        if (event.target.files && event.target.files[0]) {
+            const img = new Image();
+
+            img.src = URL.createObjectURL(event.target.files[0]);
+
+            img.onload = function () {
+                const canvas = document.createElement("canvas");
+
+                let scale = 1;
+                const maxDim = 1008;
+
+                if (img.width > maxDim || img.height > maxDim) {
+                    if (img.width > img.height) {
+                        scale = maxDim / img.width;
+                    } else {
+                        scale = maxDim / img.height;
+                    }
+
+                }
+                canvas.width = img.width * scale;
+                canvas.height = img.height * scale;
+                const ctx = canvas.getContext("2d");
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+                const worker = new Worker('worker.js');
+                worker.postMessage({
+                    eventType: "INITIALISE",
+                    eventData: JSON.stringify({
+                        image: canvas.toDataURL(),
+                        points: parseInt(document.getElementById("points").value)
+                    })
+                });
+
+                document.getElementById("start").disabled = true;
+                document.getElementById("upload").classList.add("disabled");
+
+                worker.onmessage = (event) => {
+                    if (event.data.done) {
+                        return;
+                    }
+                    if (event.data.error) {
+                        return;
+                    }
+                    render(event.data.message.renderData);
+                }
+            }
+        }
+    }
+
+    document.getElementById("upload").addEventListener("change", uploaded);
+</script>
+</html>
